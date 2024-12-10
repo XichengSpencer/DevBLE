@@ -1,97 +1,82 @@
-# AndroidDev
-Technical Challenge
-# Neurable Android Technical Challenge
+## Table of Contents
+- [Features](#features)
+- [Approach](#approach)
+- [Prerequisites](#prerequisites)
+- [Build and Run](#build-and-run)
 
-## Objective
-Build a simplified Android app to demonstrate your ability to design a basic UI and simulate device communication relevant to EEG-based focus monitoring.
+## Features
+- Real-Time Focus Score: Displays a simulated focus score that updates every 5 seconds.
+- Start/Stop Monitoring: Allows users to start or stop the focus monitoring process.
+- BLE Connection Simulation: Simulates the BLE connection flow with states: Scanning, Connecting, and Connected.
+- Asynchronous Operations: Utilizes Kotlin Coroutines to handle background tasks without blocking the UI.
+- Responsive UI: Built with Jetpack Compose for a modern and reactive user interface.
+- State Preservation: Maintains UI state across configuration changes like screen rotations.
 
----
+## Approach
 
-## Requirements
+### 1. Architecture and State Management
+- **MVVM Pattern**: Implemented the Model-View-ViewModel (MVVM) architecture to separate concerns, ensuring a clear distinction between UI components and business logic.
+- **ViewModel**: Used `FocusViewModel` to manage UI state and handle business logic, ensuring state persistence across configuration changes.
+- **StateFlow**: Leveraged Kotlin's `StateFlow` for reactive and observable state management, allowing the UI to automatically update in response to state changes.
 
-### User Interface
-- Use **Jetpack Compose** to create a simple screen that displays a "focus score" (simulated) that updates in real-time.
-- Include a button to start/stop the focus monitoring.
+### 2. User Interface with Jetpack Compose
+- **Composable Functions**: Designed the UI using Jetpack Compose's declarative paradigm, creating reusable and modular UI components.
+- **Dynamic UI Elements**: Included buttons to start/stop monitoring and connect/disconnect BLE, as well as text displays for focus scores and BLE statuses.
+- **Progress Indicators**: Added visual indicators to represent BLE scanning and connecting phases, enhancing user feedback.
 
-### Data Simulation
-- Simulate receiving a "focus score" (e.g., a random number generator between 0 and 100) that updates every 5 seconds.
-- Ensure the app can start and stop the data simulation when the button is clicked.
+### 3. Asynchronous Operations with Kotlin Coroutines
+- **Focus Score Simulation**: Implemented a `FocusRepository` that emits random focus scores every 5 seconds using Kotlin Coroutines and `Flow`.
+- **BLE Connection Flow**: Simulated the BLE connection process through different states (`Scanning`, `Connecting`, `Connected`) with timed delays to mimic real-world behavior.
+- **Lifecycle Awareness**: Managed coroutine scopes within the `ViewModel` to ensure tasks are appropriately canceled during lifecycle changes, preventing memory leaks.
 
-### BLE Simulation
-- Simulate connecting to a **BLE device** (no need for actual device communication).
-- Implement a basic BLE scan and connection UI flow (simulating this with state management is sufficient).
+### 4. BLE Simulation and Permission Handling
+- **State Management**: Created a `BleSimulation` object to manage and emit BLE statuses, allowing the UI to react to state changes.
+- **Permission Simulation**: Simulated Bluetooth permission requests within the `ViewModel`, toggling BLE connection states based on permission outcomes.
 
-### Asynchronous Programming
-- Use **Kotlin Coroutines** to handle the simulated focus score updates asynchronously, ensuring the UI remains responsive.
+### 5. Code Quality and Modularity
+- **Clean Code Practices**: Structured the codebase into distinct packages (`ui`, `data`, `viewmodel`, etc.) to promote readability and maintainability.
+- **Separation of Concerns**: Ensured that data handling, business logic, and UI rendering are handled independently, facilitating easier testing and scalability.
 
-### Code Quality
-- Structure your code to be modular and clean, showcasing your understanding of best practices.
+## Prerequisites
+- **Android Studio**: [Download and install](https://developer.android.com/studio) the latest version of Android Studio.
+- **Android SDK**: Ensure that the Android SDK is installed and up to date.
+- **Kotlin**: The project uses Kotlin; Android Studio typically includes the necessary Kotlin support.
 
----
+## Build and Run
 
-## Bonus (Optional)
-- Write a single **unit test** for the focus score simulation logic using **JUnit**.
+### Option 1: Run Through Android Studio
 
----
 
-## Evaluation Criteria
-Your submission will be assessed based on the following:
+1. Open in Android Studio:
+    - Launch Android Studio.
+    - Click on "Open an existing project".
+    - Navigate to the cloned repository folder and select it.
 
-1. **UI Design**  
-   - Clean, minimal interface using Jetpack Compose.
+2. Build the Project:
+    - Allow Android Studio to sync and build the project. The IDE will download the necessary dependencies and set up the environment automatically.
 
-2. **Data Simulation**  
-   - Proper simulation of focus score and BLE interaction.
+3. Run the App:
+    - Connect an Android device via USB or start an Android emulator.
+    - Click the "Run" button (▶️) in Android Studio.
+    - Select your target device or emulator to deploy and run the app.
 
-3. **Asynchronous Handling**  
-   - Effective use of Kotlin Coroutines to manage data updates.
+4. Interact with the App:
+    - **Connect BLE**: Click the "Connect BLE" button to simulate Bluetooth connection. Observe the BLE status transitions: Scanning → Connecting → Connected.
+    - **Start Monitoring**: Once BLE is connected, the "Start Monitoring" button becomes enabled. Click it to begin receiving simulated focus scores every 5 seconds.
+    - **Stop Monitoring**: Click the "Stop Monitoring" button to halt focus score updates.
+    - **Disconnect BLE**: Clicking "Disconnect BLE" will disconnect the simulated Bluetooth connection and automatically stop monitoring if it was active.
 
-4. **Code Structure**  
-   - Clean, modular code that follows best practices.
+### Option 2: Run Through APK
 
----
+1. Locate APK:
+    - Looking for app-debug.apk in the attachment.
 
-## Submission Instructions
+2. Transfer the APK to Your Device:
+    - Copy the APK file to your Android device via USB or any file transfer method.
 
-1. **Clone the Repository**
-   - Clone the repository to your local machine:
-     ```bash
-     git clone https://github.com/Thrive-Staffing/AndroidDev.git
-     ```
-   - Switch to the **submissions branch**:
-     ```bash
-     git checkout submissions
-     ```
+3. Install the APK:
+    - On your Android device, enable "Install unknown apps" in your device settings if not already enabled.
+    - Locate the APK file and install it.
 
-2. **Complete the Challenge**
-   - Implement the required features as outlined above in your local repository.
-   - Include a `README.md` file in your submission with:
-     - Your approach to solving the challenge.
-     - Steps to build and run the app.
-     - Any additional notes or assumptions.
-
-3. **Build and Include an APK (Optional but Recommended)**  
-   - Generate an APK file:
-     - Open the project in Android Studio.
-     - Go to `Build > Build Bundle(s)/APK(s) > Build APK(s)`.
-   - Add the APK to your submission or include a link in your `README.md` file.
-
-4. **Push Your Submission to the `submissions` Branch**
-   - Add and commit your changes:
-     ```bash
-     git add .
-     git commit -m "Completed Neurable Android Technical Challenge"
-     ```
-   - Push your submission to the `submissions` branch:
-     ```bash
-     git push origin submissions
-     ```
-
-5. **Notify the Team**
-   - Notify us via email or your designated contact person once your submission is complete.
-
----
-
-## Expected Time Commitment
-- This challenge is designed to take **2-3 hours** for an experienced developer.
-- Focus on core tasks like UI design, data simulation, and state management.
+4. Run the App:
+    - Open the app from your device’s app drawer and interact with it as described above.
