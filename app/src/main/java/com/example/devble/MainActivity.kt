@@ -1,11 +1,11 @@
 package com.example.devble
 
+import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import com.example.devble.ui.FocusScreen
 import com.example.devble.viewmodel.FocusViewModel
-import android.os.Bundle
-import androidx.activity.ComponentActivity
 
 
 class MainActivity : ComponentActivity() {

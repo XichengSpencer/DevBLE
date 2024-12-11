@@ -1,15 +1,17 @@
 package com.example.devble.viewmodel
 
-import com.example.devble.data.BleSimulation
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.devble.data.BleSimulation
 import com.example.devble.data.BleStatus
 import com.example.devble.data.FocusRepository
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class UiState(
     val focusScore: Int = 0,
@@ -26,10 +28,11 @@ class FocusViewModel : ViewModel() {
 
     private var monitoringJob: Job? = null
     private var bleConnectionJob: Job? = null
+    private var bleStatusObserverJob: Job? = null
 
     init {
         // Observe BLE connection state
-        viewModelScope.launch {
+        bleStatusObserverJob = viewModelScope.launch {
             BleSimulation.bleStatus.collect { status ->
                 _uiState.update { it.copy(bleStatus = status) }
 
@@ -55,7 +58,7 @@ class FocusViewModel : ViewModel() {
     fun stopMonitoring() {
         if (!_uiState.value.isMonitoring) return
         monitoringJob?.cancel()
-        _uiState.update { it.copy(isMonitoring = false) }
+        _uiState.update { it.copy(isMonitoring = false, focusScore = 0) }
     }
 
     fun onBleConnectClicked() {
@@ -102,5 +105,14 @@ class FocusViewModel : ViewModel() {
     fun disconnectBle() {
         bleConnectionJob?.cancel()
         BleSimulation.setBleStatus(BleStatus.Disconnected)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        // Cancel all ongoing jobs
+        monitoringJob?.cancel()
+        bleConnectionJob?.cancel()
+        bleStatusObserverJob?.cancel()
     }
 }
