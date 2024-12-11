@@ -37,6 +37,12 @@
 - **Clean Code Practices**: Structured the codebase into distinct packages (`ui`, `data`, `viewmodel`, etc.) to promote readability and maintainability.
 - **Separation of Concerns**: Ensured that data handling, business logic, and UI rendering are handled independently, facilitating easier testing and scalability.
 
+### 6. Tests (Optional Part)
+- **Initial State**: Verified the initial state of the `FocusViewModel`, ensuring all default values are correctly initialized.
+- **Start Monitoring**: Ensured starting monitoring updates the ViewModel state correctly, verifying BLE connection and monitoring status transitions.
+- **Stop Monitoring Resets Score**: Confirmed that stopping monitoring resets the focus score and updates the monitoring state.
+- **BLE Disconnect Stops Monitoring**: Validated that disconnecting BLE stops monitoring and resets the focus score and BLE status.
+
 ## Prerequisites
 - **Android Studio**: [Download and install](https://developer.android.com/studio) the latest version of Android Studio.
 - **Android SDK**: Ensure that the Android SDK is installed and up to date.
